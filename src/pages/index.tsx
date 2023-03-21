@@ -1,5 +1,8 @@
 import Layout from "@/components/Layout";
+import { NextPage } from "next";
 
-export default function Home() {
-  return <Layout>HI</Layout>;
-}
+const HomePage: NextPage = () => {
+  return <Layout>Home Page</Layout>;
+};
+
+export default HomePage;
