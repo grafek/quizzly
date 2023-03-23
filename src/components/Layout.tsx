@@ -8,27 +8,37 @@ const NAV_ITEMS = [
   { text: "Home", destination: "/" },
   { text: "Play", destination: "/categories" },
   { text: "Rules", destination: "/rules" },
+  { text: "Scoreboard", destination: "/scoreboard" },
   // { text: "History", destination: "/history" },
-  // { text: "Scoreboard", destination: "/scoreboard" },
 ];
 
 type LayoutProps = {
   title?: string;
   children: React.ReactNode;
+  heading?: string;
 };
 
-const Layout: React.FC<LayoutProps> = ({ title = "Quizzly", children }) => {
+const Layout: React.FC<LayoutProps> = ({
+  title = "Quizzly",
+  children,
+  heading,
+}) => {
   return (
-    <div className="h-screen overflow-x-hidden text-dark-100 scrollbar-thin scrollbar-track-dark-900 scrollbar-thumb-goldenrod">
+    <div className="h-screen overflow-x-hidden text-dark-100 scrollbar-thin scrollbar-track-dark-900 scrollbar-thumb-goldenrod/75">
       <Head>
         <title>{title}</title>
-        <meta name="description" content="Quizzly - quizzes witLink claw!" />
+        <meta name="description" content="Quizzly - quizzes with a claw!" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="min-h-screen bg-dark-900 px-4 pt-20">
+      <main className="min-h-screen bg-dark-900 px-4 pt-20 pb-6">
         <div className="container mx-auto" id="container">
+          {heading ? (
+            <h1 className="pb-10 font-mukta text-5xl text-white md:pb-16 md:text-8xl">
+              {heading}.
+            </h1>
+          ) : null}
           {children}
         </div>
       </main>

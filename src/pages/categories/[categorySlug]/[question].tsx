@@ -26,15 +26,16 @@ const QuestionPage: NextPage<QuestionPageProps> = ({ category }) => {
   const hasAnswers = !!question?.answers;
   const hasContent = !!question?.content;
 
-  console.log(category);
-
   return (
-    <Layout title={`${category.title} - ${questionNum}`}>
+    <Layout
+      title={`${category?.title} - ${questionNum}`}
+      heading={`${category?.title} - ${questionNum}`}
+    >
       <>
         {/* ONLY CONTENT W/OUT ANSWER FOR "Heads-up!" PUZZLE*/}
         {hasContent && !hasAnswers && !hasImg ? (
           <h2
-            className={`text-center text-[4rem] md:text-[10rem] xl:text-[12rem]`}
+            className={`text-center text-[3rem] md:text-[7rem] xl:text-[12rem]`}
           >
             {question?.content}
           </h2>
@@ -56,9 +57,14 @@ const QuestionPage: NextPage<QuestionPageProps> = ({ category }) => {
                 />
               </div>
             ) : null}
-            <ol className="ml-4 list-letters">
+            <ol className="ml-4 list-letters text-xl">
               {question?.answers?.map((answer, idx) => (
-                <li key={`${question._id}-answer-${idx}`}>{answer}</li>
+                <li
+                  className="my-1 marker:font-bold marker:text-goldenrod"
+                  key={`${question._id}-answer-${idx}`}
+                >
+                  {answer}
+                </li>
               ))}
             </ol>
           </>

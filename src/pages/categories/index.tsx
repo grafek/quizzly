@@ -10,7 +10,7 @@ type CategoriesPageProps = {
 
 const CategoriesPage: NextPage<CategoriesPageProps> = ({ categories }) => {
   return (
-    <Layout title="Let's play!">
+    <Layout title="Let's play!" heading="Categories">
       <div className="flex flex-wrap gap-12">
         {categories.map((category) => (
           <Card

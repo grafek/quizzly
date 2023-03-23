@@ -30,5 +30,12 @@ export interface Category extends SanityDocument {
   title: string;
   questions: Question[];
   rules: string[];
-  slug: Slug
+  slug: Slug;
+}
+
+export interface User extends SanityDocument {
+  _type: "user";
+  name: string;
+  score: number;
+  image: SanityImage;
 }
