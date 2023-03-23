@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'quizzly',
 
-  dataset: 'dev',
+  dataset: 'prod',
   projectId: 'x2nf5lkt',
 
   plugins: [deskTool(), visionTool()],
