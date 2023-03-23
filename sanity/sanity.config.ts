@@ -7,8 +7,8 @@ export default defineConfig({
   name: 'default',
   title: 'quizzly',
 
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'prod',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID as string,
+  dataset: 'dev',
+  projectId: 'x2nf5lkt',
 
   plugins: [deskTool(), visionTool()],
 

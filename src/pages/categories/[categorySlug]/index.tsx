@@ -7,7 +7,7 @@ import Card from "@/components/Card";
 import { useRouter } from "next/router";
 
 interface Params extends ParsedUrlQuery {
-  slug: string;
+  categorySlug: string;
 }
 
 type CategoryPageProps = {
@@ -18,7 +18,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ category }) => {
   const router = useRouter();
 
   return (
-    <Layout title="Let's play!">
+    <Layout title="Let's play!" heading={category.title}>
       <div className="flex flex-wrap gap-12">
         {category.questions.map((question, idx) => (
           <Card
@@ -37,7 +37,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ category }) => {
 export default CategoryPage;
 
 const query = `*[_type == "category" && slug.current == $categorySlug][0]{
-  slug,
+  slug,title,
   questions[] ->
 }`;
 

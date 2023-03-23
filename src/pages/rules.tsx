@@ -7,10 +7,7 @@ type RulesProps = { categories: Category[] };
 
 const RulesPage: NextPage<RulesProps> = ({ categories }) => {
   return (
-    <Layout title="Rules">
-      <h2 className="pb-4 font-mukta text-5xl text-white md:text-8xl">
-        Rules.
-      </h2>
+    <Layout title="Rules" heading="Rules">
       <ul>
         {categories.map((category) => (
           <div key={category._id}>
