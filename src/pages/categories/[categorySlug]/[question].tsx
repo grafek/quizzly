@@ -1,4 +1,3 @@
-import Layout from "@/components/Layout";
 import { sanityClient, getImgUrl } from "@/lib/sanityConfig";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
@@ -27,50 +26,45 @@ const QuestionPage: NextPage<QuestionPageProps> = ({ category }) => {
   const hasContent = !!question?.content;
 
   return (
-    <Layout
-      title={`${category?.title} - ${questionNum}`}
-      heading={`${category?.title} - ${questionNum}`}
-    >
-      <>
-        {/* ONLY CONTENT W/OUT ANSWER FOR "Heads-up!" PUZZLE*/}
-        {hasContent && !hasAnswers && !hasImg ? (
+    <>
+      {/* ONLY CONTENT W/OUT ANSWER FOR "Heads-up!" PUZZLE*/}
+      {hasContent && !hasAnswers && !hasImg ? (
+        <h2
+          className={`text-center text-[3rem] md:text-[7rem] xl:text-[12rem]`}
+        >
+          {question?.content}
+        </h2>
+      ) : (
+        <>
           <h2
-            className={`text-center text-[3rem] md:text-[7rem] xl:text-[12rem]`}
+            className={`"text-center text-[2rem] md:text-[3rem] xl:text-[4rem]`}
           >
             {question?.content}
           </h2>
-        ) : (
-          <>
-            <h2
-              className={`"text-center text-[2rem] md:text-[3rem] xl:text-[4rem]`}
-            >
-              {question?.content}
-            </h2>
-            {hasImg && typeof question.image !== "undefined" ? (
-              <div className="relative flex h-[60vh] w-full items-center justify-center">
-                <Image
-                  src={getImgUrl(question?.image).url()}
-                  alt={`puzzle-photo`}
-                  fill
-                  className="py-4"
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-            ) : null}
-            <ol className="ml-4 list-letters text-xl">
-              {question?.answers?.map((answer, idx) => (
-                <li
-                  className="my-1 marker:font-bold marker:text-goldenrod"
-                  key={`${question._id}-answer-${idx}`}
-                >
-                  {answer}
-                </li>
-              ))}
-            </ol>
-          </>
-        )}
-      </>
-    </Layout>
+          {hasImg && typeof question.image !== "undefined" ? (
+            <div className="relative flex h-[60vh] w-full items-center justify-center">
+              <Image
+                src={getImgUrl(question?.image).url()}
+                alt={`puzzle-photo`}
+                fill
+                className="py-4"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          ) : null}
+          <ol className="ml-4 list-letters text-xl">
+            {question?.answers?.map((answer, idx) => (
+              <li
+                className="my-1 marker:font-bold marker:text-goldenrod"
+                key={`${question._id}-answer-${idx}`}
+              >
+                {answer}
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
+    </>
   );
 };
 
