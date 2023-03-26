@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps<ScoreboardProps> = async () => {
 
   return {
     props: {
-      users: users as User[],
+      users,
     },
   };
 };

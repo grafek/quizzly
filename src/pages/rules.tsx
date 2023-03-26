@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<RulesProps> = async () => {
 
   return {
     props: {
-      categories: categories as Category[],
+      categories,
     },
   };
 };

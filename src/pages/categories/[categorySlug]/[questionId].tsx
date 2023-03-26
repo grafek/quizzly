@@ -1,33 +1,25 @@
 import { sanityClient, getImgUrl } from "@/lib/sanityConfig";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { useRouter } from "next/router";
-import { Category } from "../../../../types";
+import type { Question } from "../../../../types";
 import Image from "next/image";
 
 interface Params extends ParsedUrlQuery {
-  slug: string;
+  questionId: string;
 }
 
 type QuestionPageProps = {
-  category: Category;
+  question: Question;
 };
 
-const QuestionPage: NextPage<QuestionPageProps> = ({ category }) => {
-  const router = useRouter();
-
-  const { question: questionParam } = router.query;
-
-  const questionNum = parseInt(questionParam as string);
-
-  const question = category?.questions[questionNum - 1];
-  const hasImg = !!question?.image;
-  const hasAnswers = !!question?.answers;
-  const hasContent = !!question?.content;
+const QuestionPage: NextPage<QuestionPageProps> = ({ question }) => {
+  const hasImg = !!question.image;
+  const hasAnswers = !!question.answers;
+  const hasContent = !!question.content;
 
   return (
     <>
-      {/* ONLY CONTENT W/OUT ANSWER FOR "Heads-up!" PUZZLE*/}
+      {/* ONLY CONTENT W/OUT ANSWER FOR "Heads-up!" PUZZLE */}
       {hasContent && !hasAnswers && !hasImg ? (
         <h2
           className={`text-center text-[3rem] md:text-[7rem] xl:text-[12rem]`}
@@ -70,21 +62,23 @@ const QuestionPage: NextPage<QuestionPageProps> = ({ category }) => {
 
 export default QuestionPage;
 
-const query = `*[_type == "category" && slug.current == $categorySlug][0]{
-  ...,
-  questions[] ->
+const questionQuery = `*[_type == "question" && _id == $questionId][0]`;
+
+const pathsQuery = `*[_type == "category" && defined(slug.current)]{
+  slug{current},
+  questions[]->{_id}
 }`;
 
-const pathsQuery = `*[_type == "question" && defined(slug.current)][].slug.current`;
+export const getStaticProps: GetStaticProps<QuestionPageProps> = async (
+  context
+) => {
+  const { questionId = "" } = context.params as Params;
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { categorySlug = "" } = context.params as Params;
-
-  const category: Category = await sanityClient.fetch(query, { categorySlug });
+  const question = await sanityClient.fetch(questionQuery, { questionId });
 
   return {
     props: {
-      category,
+      question,
     },
   };
 };
@@ -93,7 +87,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await sanityClient.fetch(pathsQuery);
 
   return {
-    paths: paths.map((slug: string) => ({ params: { slug } })),
+    paths: paths.flatMap(
+      (category: {
+        slug: { current: string };
+        questions: { _id: string }[];
+      }) => {
+        const categorySlug = category.slug.current;
+        const questionIds = category.questions.map((question) => question._id);
+
+        return questionIds.map((questionId) => ({
+          params: { categorySlug, questionId },
+        }));
+      }
+    ),
     fallback: "blocking",
   };
 };

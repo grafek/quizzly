@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<CategoriesPageProps> = async () => {
 
   return {
     props: {
-      categories: categories as Category[],
+      categories,
     },
   };
 };
