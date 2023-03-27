@@ -1,4 +1,3 @@
-import Layout from "@/components/Layout";
 import { sanityClient } from "@/lib/sanityConfig";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { type Category } from "../../../../types";
@@ -18,32 +17,32 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ category }) => {
   const router = useRouter();
 
   return (
-    <Layout title="Let's play!" heading={category.title}>
-      <div className="flex flex-wrap gap-12">
-        {category.questions.map((question, idx) => (
-          <Card
-            href={`${router.asPath}/${idx + 1}`}
-            key={question._id}
-            isQuestion={true}
-          >
-            {idx + 1}
-          </Card>
-        ))}
-      </div>
-    </Layout>
+    <div className="flex flex-wrap gap-12">
+      {category.questions.map((question, idx) => (
+        <Card
+          href={`${router.asPath}/${question._id}`}
+          key={question._id}
+          isQuestion={true}
+        >
+          {idx + 1}
+        </Card>
+      ))}
+    </div>
   );
 };
 
 export default CategoryPage;
 
 const query = `*[_type == "category" && slug.current == $categorySlug][0]{
-  slug,title,
+  ...,
   questions[] ->
 }`;
 
-const pathsQuery = `*[_type == "question" && defined(slug.current)][].slug.current`;
+const pathsQuery = `*[_type == "category" && defined(slug.current)][].slug.current`;
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<CategoryPageProps> = async (
+  context
+) => {
   const { categorySlug = "" } = context.params as Params;
 
   const category = await sanityClient.fetch(query, { categorySlug });

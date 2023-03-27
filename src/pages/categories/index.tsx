@@ -1,5 +1,4 @@
 import Card from "@/components/Card";
-import Layout from "@/components/Layout";
 import { sanityClient } from "@/lib/sanityConfig";
 import { GetStaticProps, NextPage } from "next";
 import { type Category } from "../../../types";
@@ -10,18 +9,13 @@ type CategoriesPageProps = {
 
 const CategoriesPage: NextPage<CategoriesPageProps> = ({ categories }) => {
   return (
-    <Layout title="Let's play!" heading="Categories">
-      <div className="flex flex-wrap gap-12">
-        {categories.map((category) => (
-          <Card
-            href={`/categories/${category.slug.current}`}
-            key={category._id}
-          >
-            {category.title}
-          </Card>
-        ))}
-      </div>
-    </Layout>
+    <div className="flex flex-wrap gap-6 md:gap-12">
+      {categories.map((category) => (
+        <Card href={`/categories/${category.slug.current}`} key={category._id}>
+          {category.title}
+        </Card>
+      ))}
+    </div>
   );
 };
 
@@ -34,7 +28,7 @@ export const getStaticProps: GetStaticProps<CategoriesPageProps> = async () => {
 
   return {
     props: {
-      categories: categories as Category[],
+      categories,
     },
   };
 };
