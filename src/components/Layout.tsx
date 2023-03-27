@@ -3,10 +3,11 @@ import { useCycle, AnimatePresence, motion as m } from "framer-motion";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const NAV_ITEMS = [
   { text: "Home", destination: "/" },
-  { text: "Play", destination: "/categories" },
+  { text: "Categories", destination: "/categories" },
   { text: "Rules", destination: "/rules" },
   { text: "Scoreboard", destination: "/scoreboard" },
   // { text: "History", destination: "/history" },
@@ -41,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ title = "Quizzly", children }) => {
           {children}
         </m.div>
       </main>
-      <footer className="text-gray border-t-[1px] border-dark-600 bg-black p-4">
+      <footer className="text-gray select-none border-t-[1px] border-dark-600 bg-black p-4">
         <div className="container mx-auto text-center">
           <Link
             href={"https://github.com/grafek"}
@@ -60,9 +61,10 @@ export default Layout;
 
 const Header: React.FC = () => {
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const router = useRouter();
 
   return (
-    <header className="fixed z-40 w-[calc(100%-8px)] border-b-[1px] border-dark-600 bg-black">
+    <header className="fixed z-40 w-[calc(100%-8px)] select-none border-b-[1px] border-dark-600 bg-black">
       <nav className="container relative mx-auto flex items-center justify-between p-3 px-5 text-light-goldenrod">
         <Link
           href="/"
@@ -103,21 +105,26 @@ const Header: React.FC = () => {
               variants={listVariants}
               className="fixed inset-0 flex h-[100dvh] w-[100dvw] flex-col items-center justify-center bg-black/95 p-4 text-dark-500"
             >
-              {NAV_ITEMS.map((item, idx) => (
-                <m.li
-                  variants={itemVariants}
-                  key={idx}
-                  className="my-1 w-full select-none text-xl font-semibold transition-all duration-300 hover:text-goldenrod"
-                >
-                  <Link
-                    className="inline-block w-full py-4 text-center"
-                    href={item.destination}
-                    shallow
+              {NAV_ITEMS.map((item, idx) => {
+                const isActive = item.destination === router.asPath;
+                return (
+                  <m.li
+                    variants={itemVariants}
+                    key={idx}
+                    className="my-1 w-full select-none text-xl font-semibold transition-all duration-300 hover:text-goldenrod"
                   >
-                    {item.text}
-                  </Link>
-                </m.li>
-              ))}
+                    <Link
+                      className={`${
+                        isActive ? "text-goldenrod" : ""
+                      } inline-block w-full py-4 text-center`}
+                      href={item.destination}
+                      shallow
+                    >
+                      {item.text}
+                    </Link>
+                  </m.li>
+                );
+              })}
             </m.ul>
           ) : null}
         </AnimatePresence>
@@ -129,20 +136,25 @@ const Header: React.FC = () => {
             role={"navigation"}
             className="hidden flex-col gap-6 text-dark-500 sm:flex sm:flex-row"
           >
-            {NAV_ITEMS.map((item, idx) => (
-              <li
-                key={idx}
-                className="select-none font-semibold sm:w-fit sm:py-0 sm:text-xl sm:hover:underline"
-              >
-                <Link
-                  shallow
-                  className="inline-block w-full px-2 text-center transition-all duration-300 hover:scale-105 hover:text-goldenrod active:scale-95"
-                  href={item.destination}
+            {NAV_ITEMS.map((item, idx) => {
+              const isActive = item.destination === router.asPath;
+              return (
+                <li
+                  key={idx}
+                  className="select-none font-semibold sm:w-fit sm:py-0 sm:text-xl sm:hover:underline"
                 >
-                  {item.text}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    shallow
+                    className={`${
+                      isActive ? "text-goldenrod" : ""
+                    } inline-block w-full px-2 text-center transition-all duration-300 hover:scale-105 hover:text-goldenrod active:scale-95`}
+                    href={item.destination}
+                  >
+                    {item.text}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         ) : null}
       </nav>
