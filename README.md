@@ -6,7 +6,7 @@ A small website to play quizzes with my friends, mainly to display categories, q
 
 - [x] website is connected to Sanity as a CMS system to manage data
 - [x] hamburger menu
-- [x] smooth animations
+- [x] smooth animations & page transitions
 
 
 ## 💻 Tech Stack
