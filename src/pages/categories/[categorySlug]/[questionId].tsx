@@ -44,11 +44,15 @@ const QuestionPage: NextPage<QuestionPageProps> = ({ question }) => {
               />
             </div>
           ) : null}
-          <ol className="ml-4 flex list-inside list-letters flex-col gap-4 text-xl sm:flex-row sm:flex-wrap ">
+          <ol
+            className={`${
+              !hasImg ? "pt-20" : "pt-4"
+            } flex list-inside list-letters flex-col gap-4 text-xl sm:flex-row sm:flex-wrap`}
+          >
             {question?.answers?.map((answer, idx) => (
               <li
                 key={`${question._id}-answer-${idx}`}
-                className="my-1 min-w-[500px] flex-1 rounded-full border border-dark-700 bg-black py-2 px-4 marker:font-bold marker:text-goldenrod"
+                className="my-1 flex-1 rounded-full border border-dark-700 bg-black py-2 px-4 marker:font-bold marker:text-goldenrod sm:min-w-[520px]"
               >
                 {answer}
               </li>
